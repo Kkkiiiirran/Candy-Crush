@@ -67,6 +67,11 @@ function dragDrop() {
 }
 
 function dragEnd() {
+
+    if(selectedCandy.src.includes("candybg") || toBeDroppedCandy.src.includes("candybg")) {
+        return;
+    }
+
     let selectedCandyPosition = selectedCandy.id.split("-");   // 0-0
     let selectedCandyRow = parseInt(selectedCandyPosition[0]);
     let selectedCandyColumn = parseInt(selectedCandyPosition[1]);
@@ -78,8 +83,6 @@ function dragEnd() {
 
     if(toBeDroppedCandyColumn == selectedCandyColumn-1 && selectedCandyRow == toBeDroppedCandyRow || toBeDroppedCandyColumn == selectedCandyColumn+1 && selectedCandyRow == toBeDroppedCandyRow || toBeDroppedCandyRow == selectedCandyRow-1 && selectedCandyColumn == toBeDroppedCandyColumn || toBeDroppedCandyRow == selectedCandyRow+1 && selectedCandyColumn == toBeDroppedCandyColumn) {
 
-        
-
         let selectedImg = selectedCandy.src;
         let toBeDroppedImg = toBeDroppedCandy.src;
 
@@ -89,7 +92,7 @@ function dragEnd() {
 
         let correctMove = isValid();
 
-        if(!correctMove) {
+        if(!correctMove) {  //if the move is not valid, swap back
             let selectedImg = selectedCandy.src;
             let toBeDroppedImg = toBeDroppedCandy.src;
 
@@ -103,9 +106,10 @@ function candyCrush() {
     threeCrush();
 }
 
-function threeCrush() {
+function threeCrush() {  
+
     for(let r=0; r<rows; r++) {
-        for(let c=0; c<columns; c++) {
+        for(let c=0; c<columns-2; c++) {
             let candy1 = board[r][c];
             let candy2 = board[r][c+1];
             let candy3 = board[r][c+2];
@@ -113,13 +117,13 @@ function threeCrush() {
             if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("candybg")) {
                 candy1.src = "./images/candybg.png";
                 candy2.src = "./images/candybg.png";
-                candy3.src = "./images/candy.png";
+                candy3.src = "./images/candybg.png";
             }
         }
     }
 
     for(let c=0; c<columns; c++) {
-        for(let r=0; r<rows; r++) {
+        for(let r=0; r<rows-2; r++) {
             let candy1 = board[r][c];
             let candy2 = board[r+1][c];
             let candy3 = board[r+2][c];
@@ -127,7 +131,7 @@ function threeCrush() {
             if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("candybg")) {
                 candy1.src = "./images/candybg.png";
                 candy2.src = "./images/candybg.png";
-                candy3.src = "./images/candy.png";
+                candy3.src = "./images/candybg.png";
             }
         }
     }
@@ -136,24 +140,24 @@ function threeCrush() {
 
 function isValid() {
     for(let r=0; r<rows; r++) {
-        for(let c=0; c<columns; c++) {
+        for(let c=0; c<columns-2; c++) {
             let candy1 = board[r][c];
             let candy2 = board[r][c+1];
             let candy3 = board[r][c+2];
 
-            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("candybg")) {
+            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("./candybg")) {
                 return true;
             }
         }
     }
 
     for(let c=0; c<columns; c++) {
-        for(let r=0; r<rows; r++) {
+        for(let r=0; r<rows-2; r++) {
             let candy1 = board[r][c];
             let candy2 = board[r+1][c];
             let candy3 = board[r+2][c];
 
-            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("candybg")) {
+            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("./candybg")) {
                 return true;
             }
         }
