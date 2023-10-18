@@ -13,6 +13,8 @@ window.onload = function() {
 
     window.setInterval(function() {
         candyCrush();
+        slideCandies();
+        newCandy();
     }, 120);
 }
 
@@ -82,7 +84,7 @@ function dragEnd() {
 
 
     if(toBeDroppedCandyColumn == selectedCandyColumn-1 && selectedCandyRow == toBeDroppedCandyRow || toBeDroppedCandyColumn == selectedCandyColumn+1 && selectedCandyRow == toBeDroppedCandyRow || toBeDroppedCandyRow == selectedCandyRow-1 && selectedCandyColumn == toBeDroppedCandyColumn || toBeDroppedCandyRow == selectedCandyRow+1 && selectedCandyColumn == toBeDroppedCandyColumn) {
-
+//if the candies are next to each other, swap them
         let selectedImg = selectedCandy.src;
         let toBeDroppedImg = toBeDroppedCandy.src;
 
@@ -99,6 +101,8 @@ function dragEnd() {
             selectedCandy.src = toBeDroppedImg;
             toBeDroppedCandy.src = selectedImg;
         }
+
+        
     }
 }
 
@@ -118,6 +122,9 @@ function threeCrush() {
                 candy1.src = "./images/candybg.png";
                 candy2.src = "./images/candybg.png";
                 candy3.src = "./images/candybg.png";
+                score+= 30;
+                document.getElementById("score").innerHTML = score; 
+                
             }
         }
     }
@@ -132,6 +139,8 @@ function threeCrush() {
                 candy1.src = "./images/candybg.png";
                 candy2.src = "./images/candybg.png";
                 candy3.src = "./images/candybg.png";
+                score+= 30;
+                document.getElementById("score").innerHTML = score;
             }
         }
     }
@@ -145,7 +154,7 @@ function isValid() {
             let candy2 = board[r][c+1];
             let candy3 = board[r][c+2];
 
-            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("./candybg")) {
+            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("candybg")) {
                 return true;
             }
         }
@@ -157,11 +166,36 @@ function isValid() {
             let candy2 = board[r+1][c];
             let candy3 = board[r+2][c];
 
-            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("./candybg")) {
+            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("candybg")) {
                 return true;
             }
         }
     }
 
     return false;
+}
+
+function slideCandies() {
+    for(let c=0; c< columns; c++) {
+        let index = rows-1;
+
+        for(let r=rows-1; r>=0; r--) {
+            if(!board[r][c].src.includes("candybg")) {
+                board[index][c].src = board[r][c].src; 
+                index--;
+            }
+        }
+
+        for(let r=index; r>=0; r--) {
+            board[r][c].src = "./images/candybg.png";
+        }
+    }
+}
+
+function newCandy() {
+    for(let c = 0; c<columns; c++) {
+        if(board[0][c].src.includes("candybg")) {
+            board[0][c].src = "./images/" + candies[Math.floor(Math.random() * candies.length)] + ".png";
+        }
+    }
 }
